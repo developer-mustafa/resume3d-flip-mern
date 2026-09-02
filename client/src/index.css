@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Base Reset ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-charcoal);
+  color: var(--color-ivory);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Page Layout & Scrollbars ────────────────────────────────────── */
+.page {
+  background-color: var(--color-ivory);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ── Print Styles ───────────────────────────────────────────── */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .book-scene {
+    perspective: none;
+    padding: 0;
+    min-height: auto;
+  }
+
+  .book-container {
+    width: 100%;
+    height: auto;
+    transform: none !important;
+  }
+
+  .book {
+    transform: none !important;
+    display: block;
+  }
+
+  .book-spine,
+  .book-shadow,
+  .book-edge,
+  .book-edge-left,
+  .book-nav,
+  .book-toc-overlay,
+  .admin-sidebar,
+  .admin-topbar,
+  nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  .book-page {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    page-break-after: always;
+  }
+
+  .page-front {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .page-content {
+    padding: 1cm;
+    overflow: visible;
+  }
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .book-page {
+    transition: none;
+  }
+
+  .book:hover {
+    transform: none;
+  }
+
+  .book-page.turning {
+    transition: opacity 0.3s ease;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Responsive Book ────────────────────────────────────────── */
+@media (max-width: 1280px) {
+  .book-container {
+    width: 960px;
+    height: 624px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .book-container {
+    width: 720px;
+    height: 520px;
+  }
+
+  .page-content {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .book-scene {
+    padding: 1rem;
+  }
+
+  .book-container {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    min-height: 600px;
+  }
+
+  .book-spine,
+  .book-edge,
+  .book-edge-left {
+    display: none;
+  }
+
+  .book-page {
+    width: 100% !important;
+    left: 0 !important;
+    position: relative;
+  }
+
+  .book-page.left-page {
+    display: none;
+  }
+
+  .book-page.right-page {
+    position: relative;
+  }
+
+  .page-content {
+    padding: 1.5rem 1.25rem;
+  }
+}
