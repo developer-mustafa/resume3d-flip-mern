@@ -1,13 +1,21 @@
 import useBookStore from '../../stores/bookStore';
 import { ChevronLeft, ChevronRight, List, Printer } from 'lucide-react';
+import ThemeSwitcher from '../ui/ThemeSwitcher';
 
 export default function BookNavigation({ onNext, onPrev }) {
   const { currentPage, totalPages, toggleTOC } = useBookStore();
 
   return (
-    <div className="book-nav flex items-center justify-center gap-4 mt-8 no-print z-50">
-      {/* Previous */}
-      <button
+    <div className="book-nav flex flex-col md:flex-row items-center justify-between gap-4 mt-8 no-print z-50 w-full max-w-4xl mx-auto px-4">
+      {/* Theme Switcher on the left */}
+      <div className="flex-1 flex justify-start">
+        <ThemeSwitcher className="text-white/60 hover:text-white" placement="top" />
+      </div>
+
+      {/* Center Navigation */}
+      <div className="flex items-center gap-4">
+        {/* Previous */}
+        <button
         onClick={onPrev}
         disabled={currentPage === 0}
         aria-label="Previous page"
@@ -50,6 +58,10 @@ export default function BookNavigation({ onNext, onPrev }) {
       >
         <ChevronRight className="w-5 h-5" />
       </button>
+      </div>
+      
+      {/* Spacer on right to balance center alignment */}
+      <div className="flex-1 hidden md:block"></div>
     </div>
   );
 }

@@ -28,16 +28,16 @@ const Page = React.forwardRef((props, ref) => {
   
   return (
     <div 
-      className={`page overflow-hidden ${isEdgePage ? '' : 'bg-gradient-to-b from-[#faf9f6] to-[#f5f3ef]'}`} 
+      className={`page overflow-hidden ${isEdgePage ? '' : 'bg-gradient-to-b from-[#faf9f6] to-[#f5f3ef] dark:from-slate-900 dark:to-slate-800'}`} 
       ref={ref}
     >
       <div className="w-full h-full relative">
         {/* Inner gutter shadow for content pages only */}
         {!isEdgePage && props.index % 2 !== 0 && (
-          <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-black/[0.04] to-transparent pointer-events-none z-20" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-black/[0.04] dark:from-black/40 to-transparent pointer-events-none z-20" />
         )}
         {!isEdgePage && props.index % 2 === 0 && (
-          <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-black/[0.04] to-transparent pointer-events-none z-20" />
+          <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-black/[0.04] dark:from-black/40 to-transparent pointer-events-none z-20" />
         )}
 
         <div className={`page-content h-full ${isEdgePage ? '' : 'p-5 md:p-8'} overflow-y-auto overflow-x-hidden custom-scrollbar`}>
@@ -92,6 +92,24 @@ export default function BookPage({ initialPage = 0 }) {
       bookRef.current.pageFlip().turnToPage(initialPage);
     }
   }, [initialPage, bookRef]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ignore if user is typing in an input or textarea (e.g. contact form)
+      const targetTag = e.target.tagName.toLowerCase();
+      if (targetTag === 'input' || targetTag === 'textarea') return;
+      
+      if (e.key === 'ArrowRight') {
+        if (bookRef.current) bookRef.current.pageFlip().flipNext();
+      } else if (e.key === 'ArrowLeft') {
+        if (bookRef.current) bookRef.current.pageFlip().flipPrev();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Play page flip sound using provided mp3
   const playFlipSound = () => {

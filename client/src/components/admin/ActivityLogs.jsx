@@ -8,7 +8,7 @@ const actionColors = {
   login: 'text-blue-400',
   logout: 'text-gray-400',
   create: 'text-emerald-400',
-  update: 'text-amber-400',
+  update: 'text-accent',
   delete: 'text-red-400',
   publish: 'text-emerald-400',
   unpublish: 'text-orange-400',

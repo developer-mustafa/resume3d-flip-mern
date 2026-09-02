@@ -30,27 +30,27 @@ export default function ProfilePage() {
       {/* Section Header */}
       <div className="mb-3">
         <div className="flex items-center gap-3 mb-2">
-          <span className="text-[10px] tracking-[0.3em] uppercase font-bold px-2.5 py-1 rounded-md" style={{ background: 'rgba(59,130,246,0.08)', color: '#3b82f6' }}>
+          <span className="text-[10px] tracking-[0.3em] uppercase font-bold px-2.5 py-1 rounded-md bg-primary/10 text-primary">
             01 // Profile
           </span>
         </div>
-        <h2 className="text-xl md:text-2xl font-black tracking-tight text-slate-800 mb-1">
+        <h2 className="text-xl md:text-2xl font-black tracking-tight text-slate-800 dark:text-slate-100 mb-1">
           Engineering Profile
         </h2>
-        <div className="w-16 h-1 rounded-full" style={{ background: 'linear-gradient(90deg, #3b82f6, #06b6d4)' }} />
+        <div className="w-16 h-1 rounded-full bg-gradient-to-r from-primary to-primary-600" />
       </div>
 
       {/* Summary */}
-      <p className="text-xs md:text-[13px] text-slate-600 leading-relaxed mb-4 font-medium border-l-2 border-blue-400/30 pl-4">
+      <p className="text-xs md:text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed mb-4 font-medium border-l-2 border-primary-400/30 pl-4">
         {p.summary || 'Full Stack Software Engineer specializing in modern web applications, SaaS architecture, backend systems, databases, cloud platforms, and AI-powered products.'}
       </p>
 
       {/* Skills Grid */}
       <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
-        <h3 className="text-[10px] tracking-[0.4em] uppercase text-slate-400 font-bold mb-3 flex items-center">
-          <span className="w-4 h-px bg-slate-300 mr-3"></span>
+        <h3 className="text-[10px] tracking-[0.4em] uppercase text-slate-400 dark:text-slate-500 font-bold mb-3 flex items-center">
+          <span className="w-4 h-px bg-slate-300 dark:bg-slate-700 mr-3"></span>
           CORE COMPETENCIES
-          <span className="flex-1 h-px bg-slate-200 ml-3"></span>
+          <span className="flex-1 h-px bg-slate-200 dark:bg-slate-700 ml-3"></span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
@@ -62,7 +62,7 @@ export default function ProfilePage() {
                 className="rounded-xl p-3 border transition-all duration-300 hover:shadow-md hover:-translate-y-0.5"
                 style={{ background: colors.bg, borderColor: colors.border }}
               >
-                <h4 className="text-xs font-bold uppercase tracking-widest mb-3 flex items-center text-slate-700">
+                <h4 className="text-xs font-bold uppercase tracking-widest mb-3 flex items-center text-slate-700 dark:text-slate-300">
                   <div className="w-2 h-2 rounded-full mr-2 shrink-0" style={{ backgroundColor: colors.dot }}></div>
                   {category === 'AI' ? 'AI Engineering' :
                    category === 'Cloud' ? 'Cloud Architecture' :
@@ -72,7 +72,7 @@ export default function ProfilePage() {
                   {grouped[category].map((skill) => (
                     <span
                       key={skill._id || skill.name}
-                      className="px-2.5 py-1 text-[10px] font-semibold tracking-wide text-slate-600 bg-white/80 rounded-md shadow-sm hover:shadow-md hover:text-blue-600 transition-all duration-200 cursor-default border border-white/60"
+                      className="px-2.5 py-1 text-[10px] font-semibold tracking-wide text-slate-600 dark:text-slate-300 bg-white/80 dark:bg-slate-800/80 rounded-md shadow-sm hover:shadow-md hover:text-primary dark:hover:text-primary transition-all duration-200 cursor-default border border-white/60 dark:border-slate-700"
                     >
                       {skill.name}
                     </span>

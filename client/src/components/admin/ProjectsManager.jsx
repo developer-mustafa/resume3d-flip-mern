@@ -23,7 +23,7 @@ const columns = [
   {
     key: 'featured',
     label: 'Featured',
-    render: (item) => item.featured ? <span className="text-amber-400 text-xs">★</span> : <span className="text-muted text-xs">—</span>,
+    render: (item) => item.featured ? <span className="text-accent text-xs">★</span> : <span className="text-muted text-xs">—</span>,
   },
   { key: 'status', label: 'Status' },
 ];

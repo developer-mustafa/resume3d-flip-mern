@@ -128,7 +128,7 @@ export default function ContactManager() {
                     <Eye className="w-4 h-4" />
                   </button>
                   <button onClick={() => updateStatus(selected._id, 'archived')} title="Archive"
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-light hover:text-amber-400 hover:bg-amber-500/5">
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-light hover:text-accent hover:bg-accent/10">
                     <Archive className="w-4 h-4" />
                   </button>
                   <button onClick={() => setDeleteTarget(selected._id)} title="Delete"

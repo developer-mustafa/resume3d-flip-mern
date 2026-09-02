@@ -118,11 +118,34 @@ export const forgotPassword = async (req, res, next) => {
 
     const resetUrl = `${req.protocol}://${req.get('host')}/admin/reset-password/${resetToken}`;
     
+    const htmlTemplate = `
+      <div style="font-family: system-ui, sans-serif, Arial; font-size: 14px; color: #333; padding: 20px 14px; background-color: #f5f5f5;">
+        <div style="max-width: 600px; margin: auto; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+          <div style="text-align: center; background-color: #1e293b; padding: 20px;">
+            <h2 style="color: #fff; margin: 0; font-size: 24px; font-weight: 700;">Resume3D CMS</h2>
+          </div>
+          <div style="padding: 30px 20px;">
+            <h1 style="font-size: 20px; margin-bottom: 20px; color: #0f172a;">You have requested a password change</h1>
+            <p style="color: #475569; line-height: 1.6;">We received a request to reset the password for your account. To proceed, please click the button below to create a new password:</p>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${resetUrl}" style="background-color: #f59e0b; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; display: inline-block;">Reset Password</a>
+            </div>
+            <p style="color: #475569; line-height: 1.6;">Or copy and paste this link into your browser:<br><a href="${resetUrl}" style="color: #3b82f6; word-break: break-all;">${resetUrl}</a></p>
+            <p style="color: #ef4444; font-size: 13px; margin-top: 20px;">This link will expire in 30 minutes.</p>
+            <p style="color: #475569; line-height: 1.6; margin-top: 20px;">If you didn't request this password reset, please ignore this email or let us know immediately. Your account remains secure.</p>
+          </div>
+        </div>
+        <div style="max-width: 600px; margin: 20px auto; text-align: center;">
+          <p style="color: #94a3b8; font-size: 12px;">This is an automated message from your Resume3D Platform.</p>
+        </div>
+      </div>
+    `;
+
     await sendEmail({
       to: admin.email,
       subject: 'Password Reset Request',
       text: `You requested a password reset. Click the link to reset your password: ${resetUrl}`,
-      html: `<p>You requested a password reset. Click <a href="${resetUrl}">here</a> to reset your password. The link is valid for 30 minutes.</p>`
+      html: htmlTemplate
     });
 
     res.status(200).json({ message: 'If an account with that email exists, a reset link has been sent.' });

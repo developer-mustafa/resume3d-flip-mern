@@ -30,7 +30,7 @@ export default function DashboardHome() {
   const cards = [
     { label: 'Total Projects', value: stats?.totalProjects || 0, icon: FolderKanban, color: 'text-blue-400 bg-blue-500/10' },
     { label: 'Published Projects', value: stats?.publishedProjects || 0, icon: FolderKanban, color: 'text-emerald-400 bg-emerald-500/10' },
-    { label: 'Draft Projects', value: stats?.draftProjects || 0, icon: FolderKanban, color: 'text-amber-400 bg-amber-500/10' },
+    { label: 'Draft Projects', value: stats?.draftProjects || 0, icon: FolderKanban, color: 'text-accent bg-accent/10' },
     { label: 'Total Skills', value: stats?.totalSkills || 0, icon: Wrench, color: 'text-purple-400 bg-purple-500/10' },
     { label: 'Experience Entries', value: stats?.totalExperience || 0, icon: Briefcase, color: 'text-cyan-400 bg-cyan-500/10' },
     { label: 'Certifications', value: stats?.totalCertifications || 0, icon: Award, color: 'text-orange-400 bg-orange-500/10' },

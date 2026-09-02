@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import useAuthStore from './stores/authStore';
+import useThemeStore from './stores/themeStore';
 import BookPage from './components/book/BookPage';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminLayout from './components/admin/AdminLayout';
@@ -30,8 +31,8 @@ function ProtectedRoute({ children }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-charcoal">
-        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-charcoal dark:bg-slate-900">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -45,10 +46,23 @@ function ProtectedRoute({ children }) {
 
 export default function App() {
   const { checkAuth } = useAuthStore();
+  const { theme, mode } = useThemeStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    // Remove all previous theme classes
+    root.classList.remove('theme-amber', 'theme-blue', 'theme-emerald', 'theme-rose', 'theme-purple', 'theme-cyan', 'theme-indigo');
+    // Remove dark class
+    root.classList.remove('light', 'dark');
+
+    // Add current mode and theme
+    root.classList.add(`theme-${theme}`);
+    root.classList.add(mode);
+  }, [theme, mode]);
 
   return (
     <>

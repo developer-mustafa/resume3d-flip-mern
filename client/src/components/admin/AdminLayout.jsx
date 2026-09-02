@@ -29,6 +29,7 @@ const navItems = [
 ];
 
 import ChangePasswordModal from './ChangePasswordModal';
+import ThemeSwitcher from '../ui/ThemeSwitcher';
 
 export default function AdminLayout() {
   const { admin, logout } = useAuthStore();
@@ -44,7 +45,7 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-charcoal flex">
+    <div className="min-h-screen bg-charcoal dark:bg-slate-900 flex">
       <ChangePasswordModal isOpen={isPasswordModalOpen} onClose={() => setIsPasswordModalOpen(false)} />
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -56,18 +57,18 @@ export default function AdminLayout() {
 
       {/* Sidebar */}
       <aside
-        className={`admin-sidebar fixed lg:sticky top-0 left-0 z-50 w-60 h-screen bg-charcoal-light border-r border-border-dark flex flex-col transition-transform lg:translate-x-0 ${
+        className={`admin-sidebar fixed lg:sticky top-0 left-0 z-50 w-60 h-screen bg-charcoal-light dark:bg-slate-800 border-r border-border-dark dark:border-slate-700 flex flex-col transition-transform lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-border-dark flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2 text-ivory hover:text-accent transition-colors">
+        <div className="p-4 border-b border-border-dark dark:border-slate-700 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2 text-ivory dark:text-slate-200 hover:text-primary transition-colors">
             <ChevronLeft className="w-4 h-4" />
             <span className="text-xs font-medium">Resume Book</span>
           </a>
           <button
-            className="lg:hidden text-muted-light hover:text-ivory"
+            className="lg:hidden text-muted-light dark:text-slate-400 hover:text-ivory dark:hover:text-slate-200"
             onClick={() => setSidebarOpen(false)}
             aria-label="Close sidebar"
           >
@@ -76,7 +77,7 @@ export default function AdminLayout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto p-2">
+        <nav className="flex-1 overflow-y-auto p-2 custom-scrollbar">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
@@ -86,8 +87,8 @@ export default function AdminLayout() {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors mb-0.5 ${
                   isActive
-                    ? 'bg-accent/10 text-accent font-medium'
-                    : 'text-muted-light hover:text-ivory hover:bg-white/5'
+                    ? 'bg-primary/10 text-primary font-medium'
+                    : 'text-muted-light dark:text-slate-400 hover:text-ivory dark:hover:text-slate-200 hover:bg-white/5 dark:hover:bg-slate-700/50'
                 }`
               }
             >
@@ -98,26 +99,26 @@ export default function AdminLayout() {
         </nav>
 
         {/* User info */}
-        <div className="p-3 border-t border-border-dark">
+        <div className="p-3 border-t border-border-dark dark:border-slate-700">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent text-xs font-semibold">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-semibold">
               {admin?.name?.charAt(0) || 'A'}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-ivory truncate">{admin?.name}</p>
-              <p className="text-[10px] text-muted-light truncate">{admin?.role}</p>
+              <p className="text-xs font-medium text-ivory dark:text-slate-200 truncate">{admin?.name}</p>
+              <p className="text-[10px] text-muted-light dark:text-slate-400 truncate">{admin?.role}</p>
             </div>
           </div>
           <button
             onClick={() => setIsPasswordModalOpen(true)}
-            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-light hover:text-white rounded-lg hover:bg-white/5 transition-colors mb-1"
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-light dark:text-slate-400 hover:text-white dark:hover:text-slate-200 rounded-lg hover:bg-white/5 dark:hover:bg-slate-700/50 transition-colors mb-1"
           >
             <KeyRound className="w-3.5 h-3.5" />
             <span>Change Password</span>
           </button>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-light hover:text-red-400 rounded-lg hover:bg-red-500/5 transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 text-xs text-muted-light dark:text-slate-400 hover:text-red-400 rounded-lg hover:bg-red-500/10 transition-colors"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Logout</span>
@@ -128,15 +129,20 @@ export default function AdminLayout() {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Topbar */}
-        <header className="admin-topbar sticky top-0 z-30 h-14 bg-charcoal-light/80 backdrop-blur-md border-b border-border-dark flex items-center px-4 lg:px-6">
-          <button
-            className="lg:hidden mr-3 text-muted-light hover:text-ivory"
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Open sidebar"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <h1 className="text-sm font-semibold text-ivory">Admin Dashboard</h1>
+        <header className="admin-topbar sticky top-0 z-30 h-14 bg-charcoal-light/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-border-dark dark:border-slate-700 flex items-center justify-between px-4 lg:px-6">
+          <div className="flex items-center">
+            <button
+              className="lg:hidden mr-3 text-muted-light dark:text-slate-400 hover:text-ivory dark:hover:text-slate-200"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open sidebar"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <h1 className="text-sm font-semibold text-ivory dark:text-slate-200">Admin Dashboard</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <ThemeSwitcher />
+          </div>
         </header>
 
         {/* Content */}
