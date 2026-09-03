@@ -96,6 +96,10 @@ app.use('/api/admin', apiLimiter, adminRoutes);
 app.use('/api/media', apiLimiter, mediaRoutes);
 
 // ── Health Check ─────────────────────────────────────────────────────
+app.get('/api', (req, res) => {
+  res.json({ message: 'Welcome to 3D Resume API', version: '1.0' });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
