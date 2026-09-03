@@ -13,6 +13,7 @@ import { Helmet } from 'react-helmet-async';
 import { LoadingState, ErrorState } from '../ui/States';
 import { Menu, X, Loader2 } from 'lucide-react';
 import PrintableResume from '../print/PrintableResume';
+import BackgroundParticles from '../ui/BackgroundParticles';
 
 const pages = [
   { id: 'cover', label: 'Cover', Component: CoverPage },
@@ -109,6 +110,13 @@ export default function BookPage({ initialPage = 0 }) {
         if (bookRef.current) bookRef.current.pageFlip().flipNext();
       } else if (e.key === 'ArrowLeft') {
         if (bookRef.current) bookRef.current.pageFlip().flipPrev();
+      } else if (e.key === 'Home') {
+        if (bookRef.current) flipToPageSequentially(0);
+      } else if (e.key === 'End') {
+        if (bookRef.current) {
+          const total = bookRef.current.pageFlip().getPageCount();
+          flipToPageSequentially(total - 1);
+        }
       }
     };
 
@@ -236,8 +244,10 @@ export default function BookPage({ initialPage = 0 }) {
 
       {/* Screen View (Interactive Book) */}
       <div
-        className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#2a2a2a] to-[#111] select-none print:hidden"
+        className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#202028] to-[#0f0f13] select-none print:hidden"
       >
+        <BackgroundParticles />
+
         <div 
           className="relative flex items-center justify-center z-10 transition-transform duration-500"
           style={{ 
