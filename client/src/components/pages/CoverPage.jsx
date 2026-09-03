@@ -106,7 +106,7 @@ export default function CoverPage() {
         <div>
           <div className="w-10 h-px bg-gradient-to-r from-primary-400/40 to-transparent mb-3" />
           <p className="text-[9px] tracking-[0.4em] uppercase text-slate-500 font-bold">
-            {p.headline || 'BUILD • SCALE • AUTOMATE'}
+            {p.headline || 'BUILD • SCALE • AUTOMATE'} <span className="text-primary-400">v{import.meta.env.VITE_APP_VERSION}</span>
           </p>
         </div>
         <div className="w-8 h-8 rounded-full flex items-center justify-center border border-slate-300 dark:border-slate-700 text-slate-500 animate-pulse hover:border-primary-400/50 hover:text-primary-600 dark:hover:text-primary-400 transition-colors cursor-pointer">

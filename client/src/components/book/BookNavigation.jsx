@@ -9,7 +9,7 @@ export default function BookNavigation({ onNext, onPrev }) {
     <div className="book-nav flex flex-col md:flex-row items-center justify-between gap-4 mt-8 no-print z-50 w-full max-w-4xl mx-auto px-4">
       {/* Theme Switcher on the left */}
       <div className="flex-1 flex justify-start">
-        <ThemeSwitcher className="text-white/60 hover:text-white" placement="top" />
+        <ThemeSwitcher className="text-slate-500 dark:text-white/60 hover:text-slate-800 dark:hover:text-white" placement="top" />
       </div>
 
       {/* Center Navigation */}
@@ -19,7 +19,7 @@ export default function BookNavigation({ onNext, onPrev }) {
         onClick={onPrev}
         disabled={currentPage === 0}
         aria-label="Previous page"
-        className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 hover:bg-white/5 disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+        className="w-11 h-11 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-white/60 hover:text-slate-800 dark:hover:text-white hover:border-slate-400 dark:hover:border-white/30 hover:bg-slate-100 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
@@ -28,14 +28,14 @@ export default function BookNavigation({ onNext, onPrev }) {
       <button
         onClick={toggleTOC}
         aria-label="Table of contents"
-        className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all"
+        className="w-11 h-11 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-white/60 hover:text-slate-800 dark:hover:text-white hover:border-slate-400 dark:hover:border-white/30 hover:bg-slate-100 dark:hover:bg-white/5 transition-all"
       >
         <List className="w-5 h-5" />
       </button>
 
       {/* Page Counter */}
-      <div className="px-4 py-2 text-sm font-mono text-white/50 tracking-wider">
-        <span className="text-white font-medium">{String(currentPage + 1).padStart(2, '0')}</span>
+      <div className="px-4 py-2 text-sm font-mono text-slate-500 dark:text-white/50 tracking-wider">
+        <span className="text-slate-800 dark:text-white font-medium">{String(currentPage + 1).padStart(2, '0')}</span>
         <span className="mx-1">/</span>
         <span>{String(totalPages || 6).padStart(2, '0')}</span>
       </div>
@@ -44,7 +44,7 @@ export default function BookNavigation({ onNext, onPrev }) {
       <button
         onClick={() => window.print()}
         aria-label="Print resume"
-        className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all"
+        className="w-11 h-11 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-white/60 hover:text-slate-800 dark:hover:text-white hover:border-slate-400 dark:hover:border-white/30 hover:bg-slate-100 dark:hover:bg-white/5 transition-all"
       >
         <Printer className="w-4 h-4" />
       </button>
@@ -54,7 +54,7 @@ export default function BookNavigation({ onNext, onPrev }) {
         onClick={onNext}
         disabled={currentPage === (totalPages || 6) - 1}
         aria-label="Next page"
-        className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 hover:bg-white/5 disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+        className="w-11 h-11 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-white/60 hover:text-slate-800 dark:hover:text-white hover:border-slate-400 dark:hover:border-white/30 hover:bg-slate-100 dark:hover:bg-white/5 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
