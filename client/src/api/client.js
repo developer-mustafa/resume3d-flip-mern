@@ -14,7 +14,11 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message = error.response?.data?.error || error.message || 'Something went wrong';
+    let message = error.response?.data?.error;
+    if (typeof message === 'object' && message !== null) {
+      message = message.message || JSON.stringify(message);
+    }
+    message = message || error.message || 'Something went wrong';
     const status = error.response?.status;
 
     // Redirect to login on 401 (if on admin pages)
