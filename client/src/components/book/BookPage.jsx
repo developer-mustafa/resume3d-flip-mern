@@ -11,6 +11,8 @@ import BookNavigation from './BookNavigation';
 import TableOfContents from './TableOfContents';
 import { Helmet } from 'react-helmet-async';
 import { LoadingState, ErrorState } from '../ui/States';
+import { Menu, X, Loader2 } from 'lucide-react';
+import PrintableResume from '../print/PrintableResume';
 
 const pages = [
   { id: 'cover', label: 'Cover', Component: CoverPage },
@@ -58,6 +60,8 @@ export default function BookPage({ initialPage = 0 }) {
   const bookRef = useRef();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [scale, setScale] = useState(1);
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Initial fetch and layout
   useEffect(() => {
@@ -89,6 +93,7 @@ export default function BookPage({ initialPage = 0 }) {
 
   useEffect(() => {
     if (initialPage > 0 && bookRef.current) {
+      // For initial direct navigation, jump directly
       bookRef.current.pageFlip().turnToPage(initialPage);
     }
   }, [initialPage, bookRef]);
@@ -111,6 +116,53 @@ export default function BookPage({ initialPage = 0 }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Ref to hold the flip interval so we can clear it if clicked multiple times
+  const flipIntervalRef = useRef(null);
+
+  // Sequential flipping logic
+  const flipToPageSequentially = (targetIdx) => {
+    if (!bookRef.current) return;
+    const book = bookRef.current.pageFlip();
+    
+    // Clear any existing flip sequence
+    if (flipIntervalRef.current) {
+      clearInterval(flipIntervalRef.current);
+    }
+    
+    flipIntervalRef.current = setInterval(() => {
+      const current = book.getCurrentPageIndex();
+      const isPortrait = book.getOrientation() === 'portrait';
+      
+      // Determine if the target page is currently visible on screen
+      let isVisible = false;
+      if (isPortrait) {
+        isVisible = current === targetIdx;
+      } else {
+        // In landscape (2-page mode), cover is [0]. Spreads are [1,2], [3,4]. Back is [5].
+        if (current === targetIdx) {
+          isVisible = true;
+        } else if (current % 2 !== 0 && targetIdx === current + 1) {
+          // If current is an odd number (left page), then current + 1 is the right page
+          isVisible = true;
+        }
+      }
+
+      // If we reached the target, stop the sequence
+      if (isVisible) {
+        clearInterval(flipIntervalRef.current);
+        flipIntervalRef.current = null;
+        return;
+      }
+      
+      // Otherwise, flip in the correct direction
+      if (targetIdx > current) {
+        book.flipNext();
+      } else {
+        book.flipPrev();
+      }
+    }, 700); // Wait 700ms between flips for a nice continuous animation
+  };
+
   // Play page flip sound using provided mp3
   const playFlipSound = () => {
     try {
@@ -125,6 +177,31 @@ export default function BookPage({ initialPage = 0 }) {
   const onFlip = (e) => {
     useBookStore.setState({ currentPage: e.data });
     playFlipSound();
+  };
+
+  // Generate professional PDF via backend (Puppeteer)
+  const generatePDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${apiBase}/resume/pdf`);
+      
+      if (!response.ok) throw new Error('PDF generation failed');
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${(profile?.name || 'Mustafa_Rahman').replace(/\s+/g, '_')}_Resume.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
   };
 
   if (isLoading) {
@@ -151,8 +228,9 @@ export default function BookPage({ initialPage = 0 }) {
         {seo?.canonicalUrl && <link rel="canonical" href={seo.canonicalUrl} />}
       </Helmet>
 
+      {/* Screen View (Interactive Book) */}
       <div
-        className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#2a2a2a] to-[#111] select-none"
+        className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#2a2a2a] to-[#111] select-none print:hidden"
       >
         <div 
           className="relative flex items-center justify-center z-10 transition-transform duration-500"
@@ -188,23 +266,43 @@ export default function BookPage({ initialPage = 0 }) {
 
           {/* Table of Contents */}
           {showTOC && <TableOfContents pages={pages} onPageSelect={(idx) => {
-            if(bookRef.current) bookRef.current.pageFlip().turnToPage(idx);
+            flipToPageSequentially(idx);
             closeTOC();
           }}/>}
         </div>
 
+        {/* Toggle Nav Button (Bottom Left) */}
+        <button
+          onClick={() => setIsNavVisible(!isNavVisible)}
+          className="fixed bottom-4 left-4 md:bottom-8 md:left-8 z-50 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/60 transition-all shadow-lg"
+          aria-label="Toggle Navigation"
+          title="Toggle Navigation Menu"
+        >
+          {isNavVisible ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+
         {/* Navigation Controls */}
-        <div className="absolute bottom-4 md:bottom-8 z-50">
+        <div className={`fixed left-4 md:left-8 top-1/2 -translate-y-1/2 z-40 transition-all duration-500 ease-in-out ${isNavVisible ? 'translate-x-0 opacity-100' : '-translate-x-32 opacity-0 pointer-events-none'}`}>
           <BookNavigation 
             onNext={() => {
-              if(bookRef.current) bookRef.current.pageFlip().flipNext();
+               if(bookRef.current) bookRef.current.pageFlip().flipNext();
             }}
             onPrev={() => {
-              if(bookRef.current) bookRef.current.pageFlip().flipPrev();
+               if(bookRef.current) bookRef.current.pageFlip().flipPrev();
             }}
+            onPrint={generatePDF}
           />
         </div>
       </div>
+
+      {/* PDF Generation Loading Overlay */}
+      {isGeneratingPDF && (
+        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center">
+          <Loader2 className="w-10 h-10 text-white animate-spin mb-4" />
+          <p className="text-white font-semibold text-lg">Generating PDF...</p>
+          <p className="text-white/60 text-sm mt-1">Please wait a moment</p>
+        </div>
+      )}
     </>
   );
 }

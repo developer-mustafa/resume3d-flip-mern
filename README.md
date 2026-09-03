@@ -4,25 +4,37 @@ A premium interactive 3D digital resume book for **Mustafa Rahman, Full Stack So
 
 ## Features
 
-- **Interactive 3D Book** — CSS 3D transforms, realistic page effects, keyboard/touch navigation
-- **5 Resume Pages** — Cover, Engineering Profile, Experience, Projects, Contact
-- **Admin Dashboard** — Full CMS with 15+ management modules
-- **Dynamic Content** — All content served from MongoDB via REST API
-- **Authentication** — JWT with HTTP-only cookies, role-based authorization
-- **Responsive** — Desktop spread, tablet scaled, mobile single-page
-- **Print Mode** — Clean A4 resume layout via `@media print`
-- **Accessibility** — WCAG-oriented, reduced motion support, keyboard navigation
-- **SEO** — React Helmet, meta tags, Open Graph
+- **Interactive 3D Book** — CSS 3D transforms, realistic page effects, keyboard/touch navigation using `react-pageflip`.
+- **High-Quality PDF Export** — Pixel-perfect A4 server-side PDF generation using `puppeteer-core`.
+- **5 Resume Pages** — Cover, Engineering Profile, Experience, Projects, Contact.
+- **Admin Dashboard** — Full CMS with 15+ management modules (Education, Certifications, Services, etc.).
+- **Dynamic Content** — All content served from MongoDB via REST API, perfectly synced between the 3D book and PDF generator.
+- **Authentication** — JWT with HTTP-only cookies, role-based authorization.
+- **Responsive** — Desktop spread, tablet scaled, mobile single-page.
+- **Accessibility** — WCAG-oriented, reduced motion support, keyboard navigation.
+- **SEO** — React Helmet, meta tags, Open Graph.
 
-## Tech Stack
+## Tech Stack & Versions
 
-| Layer | Technologies |
-|---|---|
-| **Frontend** | React 19, Vite, Tailwind CSS v4, Zustand, Framer Motion, Lucide React |
-| **Backend** | Node.js, Express 5, Mongoose 8 |
-| **Database** | MongoDB (Atlas compatible) |
-| **Auth** | JWT, bcryptjs, HTTP-only cookies |
-| **Security** | Helmet, CORS, rate limiting, mongo-sanitize, XSS protection |
+### Frontend (Client)
+- **Framework:** React `v19.2.8`
+- **Build Tool:** Vite `v8.2.2`
+- **Styling:** Tailwind CSS `v3.4.17`, PostCSS `v8.5.26`
+- **State Management:** Zustand `v5.0.15`
+- **Animations:** Framer Motion `v13.1.1`
+- **3D Flip Engine:** react-pageflip `v2.0.3`
+- **Routing:** react-router-dom `v7.18.3`
+- **API Client:** Axios `v1.20.0`
+- **Icons:** lucide-react `v1.39.0`
+
+### Backend (Server)
+- **Runtime:** Node.js (Optimized for `v22+`)
+- **Framework:** Express `v5.1.0`
+- **Database ORM:** Mongoose `v8.14.3`
+- **PDF Generation:** puppeteer-core `v25.9.0` (Configured for dynamic Chrome/Edge executable)
+- **Authentication:** jsonwebtoken `v9.0.2`, bcryptjs `v3.0.2`
+- **Security:** helmet `v8.1.0`, express-rate-limit `v7.5.0`, express-mongo-sanitize `v2.2.0`, xss `v1.0.15`
+- **File Uploads:** multer `v2.0.1`
 
 ## Architecture
 
@@ -34,7 +46,7 @@ resume-book/
 │   │   ├── components/
 │   │   │   ├── admin/    # Dashboard modules
 │   │   │   ├── book/     # 3D book engine
-│   │   │   ├── pages/    # Resume page content
+│   │   │   ├── print/    # High-quality printable UI layout
 │   │   │   └── ui/       # Reusable UI components
 │   │   ├── stores/       # Zustand stores
 │   │   ├── App.jsx
@@ -43,10 +55,10 @@ resume-book/
 │
 ├── server/               # Express backend
 │   ├── config/           # Database configuration
-│   ├── controllers/      # Route handlers
-│   ├── middleware/        # Auth, validation, error handling
-│   ├── models/           # 13 Mongoose models
-│   ├── routes/           # 14 route groups
+│   ├── controllers/      # Route handlers (including pdfController)
+│   ├── middleware/       # Auth, validation, error handling
+│   ├── models/           # 14 Mongoose models
+│   ├── routes/           # 15 route groups (including PDF route)
 │   ├── seed/             # Database seeding
 │   ├── utils/            # JWT, activity logging
 │   ├── validators/       # express-validator rules
@@ -71,7 +83,7 @@ npm run install:all
 
 ## Environment Variables
 
-Copy `.env.example` to `server/.env` and configure:
+Copy `server/.env.example` to `server/.env` and configure:
 
 ```env
 PORT=5000
@@ -81,6 +93,11 @@ JWT_EXPIRE=7d
 COOKIE_SECRET=your-cookie-secret
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
+
+# Puppeteer Configuration for PDF generation
+# Local Windows (Edge): "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+# Linux VPS (Ubuntu): "/usr/bin/chromium-browser"
+PUPPETEER_EXECUTABLE_PATH="C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
 ```
 
 ## MongoDB Setup
@@ -151,6 +168,7 @@ npm run server    # Backend on http://localhost:5000
 | `/api/seo` | GET | PUT | SEO settings |
 | `/api/media` | — | GET, POST, DELETE | File management |
 | `/api/admin` | — | Dashboard, users, logs | Admin management |
+| `/api/resume/pdf` | GET | — | Generates high-quality PDF resume |
 
 ## Production Build
 
@@ -158,13 +176,15 @@ npm run server    # Backend on http://localhost:5000
 npm run build    # Builds frontend to client/dist/
 ```
 
-## Deployment
+## Deployment Guidelines
 
-**Frontend** — Deploy `client/dist/` to Vercel or Netlify
+**Frontend** — Deploy `client/dist/` to Vercel, Netlify, or serve statically via Express.
 
-**Backend** — Deploy `server/` to Render, Railway, or VPS
+**Backend** — Deploy `server/` to Render, Railway, or VPS.
 
-**Database** — Use MongoDB Atlas
+**PDF Generation in Production (Puppeteer):**
+- **VPS (Ubuntu):** Install `chromium-browser` via `apt` and set `PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser`.
+- **Serverless (Vercel/AWS):** You must install `@sparticuz/chromium` in your server dependencies and update `executablePath` in `pdfController.js` to point to it dynamically.
 
 ## Security
 
@@ -181,4 +201,3 @@ npm run build    # Builds frontend to client/dist/
 ## License
 
 Private — All rights reserved.
-# resume3d-flip-mern

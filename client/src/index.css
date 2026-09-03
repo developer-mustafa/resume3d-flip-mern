@@ -188,8 +188,8 @@ html.dark body {
 /* ── Print Styles ───────────────────────────────────────────── */
 @media print {
   body {
-    background: white;
-    color: black;
+    background: white !important;
+    color: black !important;
   }
 
   .book-scene {

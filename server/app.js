@@ -27,6 +27,7 @@ import seoRoutes from './routes/seo.js';
 import adminRoutes from './routes/admin.js';
 import mediaRoutes from './routes/media.js';
 import emailSettingsRoutes from './routes/emailSettings.js';
+import resumeRoutes from './routes/resume.js';
 
 const app = express();
 
@@ -94,6 +95,7 @@ app.use('/api/email-settings', apiLimiter, emailSettingsRoutes);
 app.use('/api/seo', apiLimiter, seoRoutes);
 app.use('/api/admin', apiLimiter, adminRoutes);
 app.use('/api/media', apiLimiter, mediaRoutes);
+app.use('/api/resume', apiLimiter, resumeRoutes);
 
 // ── Health Check ─────────────────────────────────────────────────────
 app.get('/api', (req, res) => {

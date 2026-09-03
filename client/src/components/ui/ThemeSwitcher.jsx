@@ -27,26 +27,30 @@ export default function ThemeSwitcher({ className = '', placement = 'bottom' }) 
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  let dropdownPositionClass = 'top-12 mt-2 right-0';
+  if (placement === 'top') dropdownPositionClass = 'bottom-12 mb-2 right-0';
+  if (placement === 'right') dropdownPositionClass = 'left-12 ml-4 top-0';
+
   return (
-    <div className={`relative flex items-center gap-2 ${className}`} ref={dropdownRef}>
+    <div className={`relative flex items-center gap-1.5 ${className}`} ref={dropdownRef}>
       <button
         onClick={toggleMode}
-        className="w-10 h-10 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
+        className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
         aria-label="Toggle Dark Mode"
       >
-        {mode === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        {mode === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
       </button>
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-10 h-10 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
+        className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
         aria-label="Choose Theme"
       >
-        <Palette className="w-5 h-5" />
+        <Palette className="w-4 h-4" />
       </button>
 
       {isOpen && (
-        <div className={`absolute right-0 ${placement === 'top' ? 'bottom-12 mb-2' : 'top-12 mt-2'} w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-3 z-50 animate-slide-in`}>
+        <div className={`absolute ${dropdownPositionClass} w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-3 z-50 animate-slide-in`}>
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3 px-2">Select Theme</p>
           <div className="grid grid-cols-4 gap-2">
             {themes.map((t) => (
