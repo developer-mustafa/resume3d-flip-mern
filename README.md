@@ -65,10 +65,8 @@ resume-book/
 git clone <repo-url>
 cd resume-book
 
-# Install all dependencies (root + client + server)
-npm install
-cd client && npm install && cd ..
-cd server && npm install && cd ..
+# Install all dependencies (root + client + server) using the custom script
+npm run install:all
 ```
 
 ## Environment Variables
@@ -100,7 +98,7 @@ CLIENT_URL=http://localhost:5173
 ## Seed Database
 
 ```bash
-cd server
+# Run from the root directory
 npm run seed
 ```
 
