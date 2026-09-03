@@ -35,10 +35,12 @@ const styles = {
     fontSize: '10.5pt', fontWeight: 800, color: '#0f172a', margin: 0,
     textTransform: 'uppercase', letterSpacing: '2px',
     paddingBottom: '5px', borderBottom: '2px solid #0f172a', marginBottom: '10px',
+    pageBreakAfter: 'avoid', breakAfter: 'avoid',
   },
   sectionWrap: { marginBottom: '16px' },
+  blockItem: { pageBreakInside: 'avoid', breakInside: 'avoid', marginBottom: '12px' },
   // Skills
-  skillRow: { display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '4px' },
+  skillRow: { display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '4px', pageBreakInside: 'avoid', breakInside: 'avoid' },
   skillLabel: { fontSize: '7.5pt', fontWeight: 700, color: '#475569', minWidth: '70px', textTransform: 'uppercase', letterSpacing: '0.5px', paddingTop: '2px' },
   skillValues: { fontSize: '8.5pt', color: '#334155', lineHeight: '1.7', flex: 1 },
   // Experience
@@ -135,7 +137,7 @@ export default function PrintableResume() {
           <div style={styles.sectionWrap}>
             <h2 style={styles.sectionTitle}>Professional Experience</h2>
             {experience.map((exp) => (
-              <div key={exp._id} style={{ marginBottom: '12px' }}>
+              <div key={exp._id} style={styles.blockItem}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <h3 style={styles.expTitle}>{exp.position}</h3>
                   {exp.duration && <span style={styles.expDuration}>{exp.duration}</span>}
@@ -164,7 +166,7 @@ export default function PrintableResume() {
           <div style={styles.sectionWrap}>
             <h2 style={styles.sectionTitle}>Education</h2>
             {filteredEducation.map((edu) => (
-              <div key={edu._id} style={{ marginBottom: '10px' }}>
+              <div key={edu._id} style={{ ...styles.blockItem, marginBottom: '10px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <h3 style={styles.eduTitle}>{edu.institution}</h3>
                   {edu.location && <span style={styles.expLocation}>📍 {edu.location}</span>}
@@ -187,7 +189,7 @@ export default function PrintableResume() {
           <div style={styles.sectionWrap}>
             <h2 style={styles.sectionTitle}>Selected Projects</h2>
             {projects.map((project) => (
-              <div key={project._id} style={{ marginBottom: '10px' }}>
+              <div key={project._id} style={{ ...styles.blockItem, marginBottom: '10px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                   <h3 style={styles.projTitle}>{project.title}</h3>
                   <div style={{ display: 'flex', gap: '8px', fontSize: '7pt', flexShrink: 0 }}>
@@ -220,7 +222,7 @@ export default function PrintableResume() {
             <h2 style={styles.sectionTitle}>Certifications</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 16px' }}>
               {filteredCertifications.map((cert) => (
-                <div key={cert._id} style={{ display: 'flex', flexDirection: 'column' }}>
+                <div key={cert._id} style={{ display: 'flex', flexDirection: 'column', pageBreakInside: 'avoid', breakInside: 'avoid' }}>
                   <h3 style={styles.certTitle}>{cert.name}</h3>
                   {cert.issuer && <span style={styles.certIssuer}>Issued by: {cert.issuer}</span>}
                   {cert.credentialId && <span style={{ fontSize: '7pt', color: '#94a3b8' }}>ID: {cert.credentialId}</span>}
@@ -236,7 +238,7 @@ export default function PrintableResume() {
             <h2 style={styles.sectionTitle}>Services</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 16px' }}>
               {filteredServices.map((svc) => (
-                <div key={svc._id}>
+                <div key={svc._id} style={{ pageBreakInside: 'avoid', breakInside: 'avoid' }}>
                   <h3 style={styles.svcTitle}>{svc.title}</h3>
                   {svc.description && <p style={styles.svcDesc}>{svc.description}</p>}
                 </div>

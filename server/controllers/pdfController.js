@@ -62,7 +62,6 @@ export const generateResumePDF = async (req, res) => {
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
-      margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' },
       preferCSSPageSize: true,
     });
 
@@ -225,7 +224,11 @@ function buildResumeHTML({ profile, grouped, sortedCategories, experience, proje
   <style>
     @page {
       size: A4;
-      margin: 0;
+      margin: 15mm 0mm; /* 15mm top and bottom margin for all pages */
+    }
+    
+    @page :first {
+      margin-top: 0mm; /* No top margin on the first page so header touches the edge */
     }
 
     * {
@@ -321,6 +324,8 @@ function buildResumeHTML({ profile, grouped, sortedCategories, experience, proje
       border-bottom: 2.5px solid #0f172a;
       padding-bottom: 6px;
       margin-bottom: 12px;
+      page-break-after: avoid;
+      break-after: avoid;
     }
 
     /* ─── Skills Table ─── */
@@ -333,6 +338,11 @@ function buildResumeHTML({ profile, grouped, sortedCategories, experience, proje
       padding: 4px 0;
       vertical-align: top;
       border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .skills-table tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .skill-label {
@@ -352,7 +362,11 @@ function buildResumeHTML({ profile, grouped, sortedCategories, experience, proje
     }
 
     /* ─── Experience ─── */
-    .exp-item { margin-bottom: 14px; }
+    .exp-item { 
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
     .exp-header {
       display: flex;
@@ -429,7 +443,11 @@ function buildResumeHTML({ profile, grouped, sortedCategories, experience, proje
     }
 
     /* ─── Education ─── */
-    .edu-item { margin-bottom: 10px; }
+    .edu-item { 
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
     .edu-title {
       font-size: 10pt;
@@ -452,7 +470,11 @@ function buildResumeHTML({ profile, grouped, sortedCategories, experience, proje
     }
 
     /* ─── Projects ─── */
-    .proj-item { margin-bottom: 12px; }
+    .proj-item { 
+      margin-bottom: 12px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
     .proj-header {
       display: flex;
@@ -496,7 +518,10 @@ function buildResumeHTML({ profile, grouped, sortedCategories, experience, proje
       gap: 8px 20px;
     }
 
-    .cert-item { }
+    .cert-item { 
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
 
     .cert-title {
       font-size: 9pt;
@@ -521,6 +546,11 @@ function buildResumeHTML({ profile, grouped, sortedCategories, experience, proje
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px 20px;
+    }
+
+    .svc-item {
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .svc-title {
