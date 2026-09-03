@@ -206,8 +206,14 @@ export default function BookPage({ initialPage = 0 }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-charcoal">
-        <LoadingState message="Loading resume..." />
+      <div id="app-loader">
+        <div className="loader-logo-wrapper">
+          <img src="/icons/icon-192x192.png" alt="Loading" className="loader-logo" />
+        </div>
+        <div className="progress-container">
+          <div className="progress-fill"></div>
+        </div>
+        <div className="loader-text">LOADING ...</div>
       </div>
     );
   }

@@ -6,7 +6,7 @@ export default function CoverPage() {
   const p = profile || {};
 
   return (
-    <div className="h-full flex flex-col relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-[#0f172a] dark:to-[#1e293b] text-slate-800 dark:text-white p-10 md:p-14 overflow-hidden border-l-[12px] border-l-slate-300 dark:border-l-[#0a0f1d] shadow-[inset_10px_0_20px_rgba(0,0,0,0.1)] dark:shadow-[inset_10px_0_20px_rgba(0,0,0,0.6)]">
+    <div className="h-full flex flex-col relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-[#0f172a] dark:to-[#1e293b] text-slate-800 dark:text-white px-10 md:px-14 py-6 md:py-8 overflow-hidden border-l-[12px] border-l-slate-300 dark:border-l-[#0a0f1d] shadow-[inset_10px_0_20px_rgba(0,0,0,0.1)] dark:shadow-[inset_10px_0_20px_rgba(0,0,0,0.6)]">
       {/* Book Binding/Spine Effect */}
       <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/5 dark:from-white/10 via-transparent to-transparent pointer-events-none z-30" />
       <div className="absolute left-2 top-0 bottom-0 w-[1px] bg-black/5 dark:bg-white/10 pointer-events-none z-30" />
@@ -26,7 +26,7 @@ export default function CoverPage() {
       }} />
 
       {/* Top section */}
-      <div className="pt-6 relative z-10">
+      <div className="pt-2 relative z-10">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-8 h-px bg-gradient-to-r from-primary-400 to-transparent" />
           <Sparkles className="w-3 h-3 text-primary-400/60" />
@@ -37,35 +37,38 @@ export default function CoverPage() {
       </div>
 
       {/* Center content */}
-      <div className="flex-1 flex flex-col justify-center -mt-4 relative z-10">
-        {/* Profile image */}
-        {p.profileImage ? (
-          <div className="w-20 h-20 rounded-2xl overflow-hidden mb-8 ring-2 ring-primary-400/30 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform duration-500">
-            <img
-              src={p.profileImage}
-              alt={p.name || 'Profile'}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ) : (
-          <div className="w-20 h-20 rounded-2xl mb-8 flex items-center justify-center ring-2 ring-primary-400/30 shadow-lg shadow-primary/20 transform hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-primary/20 to-primary-600/20">
-            <span className="text-2xl font-bold text-primary-300/80">
-              {(p.name || 'MR').split(' ').map(w => w[0]).join('')}
-            </span>
-          </div>
-        )}
+      <div className="flex-1 flex flex-col justify-start mt-4 relative z-10">
+        {/* Header Section: Image + Name/Title */}
+        <div className="flex flex-col mb-8">
+          {/* Profile image */}
+          {p.profileImage ? (
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl overflow-hidden mb-6 ring-4 ring-primary-400/30 shadow-xl shadow-primary/20 transform hover:scale-105 transition-transform duration-500">
+              <img
+                src={p.profileImage}
+                alt={p.name || 'Profile'}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ) : (
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl mb-6 flex items-center justify-center ring-4 ring-primary-400/30 shadow-xl shadow-primary/20 transform hover:scale-105 transition-transform duration-500 bg-gradient-to-br from-primary/20 to-primary-600/20">
+              <span className="text-5xl font-bold text-primary-300/80">
+                {(p.name || 'MR').split(' ').map(w => w[0]).join('')}
+              </span>
+            </div>
+          )}
 
-        {/* Name */}
-        <h1 className="text-4xl md:text-[42px] font-black tracking-tight leading-none mb-3 text-slate-800 dark:text-white">
-          {p.name || 'Mustafa Rahman'}
-        </h1>
-
-        {/* Title with accent line */}
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-6 h-0.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full" />
-          <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-300">
-            {p.title || 'Full Stack Software Engineer'}
-          </h2>
+          {/* Name and Title */}
+          <div className="flex flex-col">
+            <h1 className="text-5xl md:text-[54px] font-black tracking-tighter leading-[1.1] mb-4 text-slate-800 dark:text-white drop-shadow-sm">
+              {p.name || 'Mustafa Rahman'}
+            </h1>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-0.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full" />
+              <h2 className="text-sm md:text-base font-bold tracking-[0.25em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-300 drop-shadow-sm leading-relaxed">
+                {p.title || 'Full Stack Software Engineer'}
+              </h2>
+            </div>
+          </div>
         </div>
 
         {/* Subtitle */}
